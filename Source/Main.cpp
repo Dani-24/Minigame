@@ -22,7 +22,7 @@
 //#pragma comment(lib, "SDL/lib/x86/SDL2main.lib")
 //#pragma comment(lib, "SDL_image/lib/x86/SDL2_image.lib")
 //#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
-
+//h
 // -------------------------------------------------------------------------
 // Defines, Types and Globals
 // -------------------------------------------------------------------------
