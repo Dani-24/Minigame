@@ -38,6 +38,8 @@
 #define SHOT_SPEED			  12
 #define SCROLL_SPEED		   5
 
+#define NB 3
+
 enum WindowEvent
 {
 	WE_QUIT = 0,
@@ -87,7 +89,7 @@ struct GlobalState
 	bool window_events[WE_COUNT];
 
 	// Texture variables
-	SDL_Texture* background;
+	SDL_Texture* background[NB];
 	SDL_Texture* ship;
 	SDL_Texture* shot;
 	int background_width;
@@ -149,10 +151,10 @@ void Start()
 
 	// Init image system and load textures
 	IMG_Init(IMG_INIT_PNG);
-	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.png"));
+	state.background[0] = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.png"));
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
 	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
-	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, NULL);
+	SDL_QueryTexture(state.background[0], NULL, NULL, &state.background_width, NULL);
 
 
 	// L4: TODO 1: Init audio system and load music/fx
@@ -189,7 +191,10 @@ void Finish()
 	Mix_Quit();
 
 	// Unload textures and deinitialize image system
-	SDL_DestroyTexture(state.background);
+	for (int i = 0; i < NB; i++) {
+		SDL_DestroyTexture(state.background[i]);
+	}
+
 	SDL_DestroyTexture(state.ship);
 	SDL_DestroyTexture(state.shot);
 
@@ -388,7 +393,8 @@ void Draw()
 	{
 	case LOGO:
 	{
-
+		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
+		SDL_RenderCopy(state.renderer, state.background[0], NULL, &rec);
 	} break;
 	case TITLE:
 	{
@@ -403,9 +409,9 @@ void Draw()
 		// Draw background texture (two times for scrolling effect)
 		// NOTE: rec rectangle is being reused for next draws
 		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
-		SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
+		SDL_RenderCopy(state.renderer, state.background[2], NULL, &rec);
 		rec.x += state.background_width;
-		SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
+		SDL_RenderCopy(state.renderer, state.background[2], NULL, &rec);
 
 		// Draw ship rectangle
 		//DrawRectangle(state.ship_x, state.ship_y, 65, 65, { 255, 0, 0, 255 });
