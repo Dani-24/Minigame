@@ -164,8 +164,8 @@ void Start()
 	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
 	SDL_QueryTexture(state.background[0], NULL, NULL, &state.background_width, NULL);
 	//enemy
-	state.enemyship1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/redship.png"));
-	state.enemyshot1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/eggshot.png"));
+	state.enemyship1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
+	
 
 	// L4: TODO 1: Init audio system and load music/fx
 	// EXTRA: Handle the case the sound can not be loaded!
@@ -187,9 +187,7 @@ void Start()
 	state.enemyship1_y = SCREEN_HEIGHT / 2;						// Pantalla: X: 0-1200 Y: 0-650 
 	state.enemylast1_shot = 0;
 
-	state.enemyship1_x = 1200;
-	state.enemyship1_y = SCREEN_HEIGHT / 2;						// Pantalla: X: 0-1200 Y: 0-650
-	state.enemylast1_shot = 0;
+
 
 	state.currentScreen = LOGO;
 }
@@ -352,6 +350,9 @@ void MoveStuff()
 	case LOGO:
 	{
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = TITLE;
+		state.enemyship1_y = 0;	// coloca la nave en un sitio distinto 
+		state.enemyship1_x = 0;
+
 	} break;
 	case TITLE:
 	{
@@ -361,8 +362,7 @@ void MoveStuff()
 	{
 		Mix_ResumeMusic();
 		//enemy
-		state.enemyship1_y = rand() % 650;	// coloca la nave en un sitio distinto 
-
+		
 		if (state.ship_y != state.enemyship1_y) {
 			if (state.ship_y - 10 > state.enemyship1_y) {
 				state.enemyship1_y += SHIP_SPEED / 3;
@@ -428,7 +428,7 @@ void Draw()
 	case LOGO:
 	{
 		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
-		SDL_RenderCopy(state.renderer, state.background[0], NULL, &rec);
+		SDL_RenderCopy(state.renderer, state.background[1], NULL, &rec);
 	} break;
 	case TITLE:
 	{
@@ -443,9 +443,9 @@ void Draw()
 		// Draw background texture (two times for scrolling effect)
 		// NOTE: rec rectangle is being reused for next draws
 		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
-		SDL_RenderCopy(state.renderer, state.background[2], NULL, &rec);
+		SDL_RenderCopy(state.renderer, state.background[0], NULL, &rec);
 		rec.x += state.background_width;
-		SDL_RenderCopy(state.renderer, state.background[2], NULL, &rec);
+		SDL_RenderCopy(state.renderer, state.background[0], NULL, &rec);
 
 		// Draw ship rectangle
 		//DrawRectangle(state.ship_x, state.ship_y, 65, 65, { 255, 0, 0, 255 });
