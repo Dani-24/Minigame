@@ -94,6 +94,9 @@ struct GlobalState
 	SDL_Texture* shot;
 	int background_width;
 
+	SDL_Texture* enemyship1;
+	SDL_Texture* enemyshot1;
+
 	// Audio variables
 	Mix_Music* music;
 	Mix_Chunk* fx_shoot;
@@ -104,6 +107,11 @@ struct GlobalState
 	Projectile shots[MAX_SHIP_SHOTS];
 	int last_shot;
 	int scroll;
+	//enemy
+	int enemyship1_x;
+	int enemyship1_y;
+	Projectile enemyshots1[MAX_SHIP_SHOTS];
+	int enemylast1_shot;
 
 	GameScreen currentScreen;		// 0-LOGO, 1-TITLE, 2-GAMEPLAY, 3-ENDING
 };
@@ -155,7 +163,9 @@ void Start()
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
 	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
 	SDL_QueryTexture(state.background[0], NULL, NULL, &state.background_width, NULL);
-
+	//enemy
+	state.enemyship1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/redship.png"));
+	state.enemyshot1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/eggshot.png"));
 
 	// L4: TODO 1: Init audio system and load music/fx
 	// EXTRA: Handle the case the sound can not be loaded!
@@ -172,12 +182,15 @@ void Start()
 	state.ship_y = SCREEN_HEIGHT / 2;
 	state.last_shot = 0;
 	state.scroll = 0;
+	//enemy
+	state.enemyship1_x = 1200;
+	state.enemyship1_y = SCREEN_HEIGHT / 2;						// Pantalla: X: 0-1200 Y: 0-650 
+	state.enemylast1_shot = 0;
 
-	/*
 	state.enemyship1_x = 1200;
 	state.enemyship1_y = SCREEN_HEIGHT / 2;						// Pantalla: X: 0-1200 Y: 0-650
 	state.enemylast1_shot = 0;
-*/
+
 	state.currentScreen = LOGO;
 }
 
@@ -197,6 +210,11 @@ void Finish()
 
 	SDL_DestroyTexture(state.ship);
 	SDL_DestroyTexture(state.shot);
+
+	//enemy
+	SDL_DestroyTexture(state.enemyship1);
+	SDL_DestroyTexture(state.enemyshot1);
+
 
 	IMG_Quit();
 
@@ -342,6 +360,22 @@ void MoveStuff()
 	case GAMEPLAY:
 	{
 		Mix_ResumeMusic();
+		//enemy
+		state.enemyship1_y = rand() % 650;	// coloca la nave en un sitio distinto 
+
+		if (state.ship_y != state.enemyship1_y) {
+			if (state.ship_y - 10 > state.enemyship1_y) {
+				state.enemyship1_y += SHIP_SPEED / 3;
+			}
+			else if (state.ship_y + 10 < state.enemyship1_y) {
+				state.enemyship1_y -= SHIP_SPEED / 3;
+			}
+			else {
+
+			}
+		}
+
+
 		// L2: DONE 7: Move the ship with arrow keys
 		if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
 		else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
@@ -419,6 +453,11 @@ void Draw()
 		// Draw ship texture
 		rec.x = state.ship_x; rec.y = state.ship_y; rec.w = 64; rec.h = 64;
 		SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
+
+		//ENEMY
+		rec.x = state.enemyship1_x; rec.y = state.enemyship1_y; rec.w = 64; rec.h = 64;
+		SDL_RenderCopy(state.renderer, state.enemyship1, NULL, &rec);
+
 
 		// L2: DONE 9: Draw active shots
 		rec.w = 64; rec.h = 64;
