@@ -1,2 +1,3 @@
 # Minigame
-MiniSerapiogame
+
+Minigame for testing SDL 
