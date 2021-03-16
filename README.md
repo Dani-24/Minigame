@@ -1,4 +1,4 @@
-# Minigame 🐟🔫🐢
+# Minigame 🔫🐢
 
 ## Description
 
