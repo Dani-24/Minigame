@@ -98,7 +98,7 @@ struct GlobalState
 	SDL_Texture* enemyshot1;
 
 	// Audio variables
-	Mix_Music* music;
+	Mix_Music* music[2];
 	Mix_Chunk* fx_shoot;
 
 	// Game elements
@@ -159,23 +159,28 @@ void Start()
 
 	// Init image system and load textures
 	IMG_Init(IMG_INIT_PNG);
-	state.background[0] = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.png"));
-	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
-	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
+	state.background[0] = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/fondo.png"));
+	state.background[1] = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/minijoc.png"));
+	state.background[2] = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/menu.png"));
+	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/turtle1.png"));
+	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/bomb1.png"));
 	SDL_QueryTexture(state.background[0], NULL, NULL, &state.background_width, NULL);
 	//enemy
-	state.enemyship1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
+	state.enemyship1 = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/medusa1.png"));
 	
 
 	// L4: TODO 1: Init audio system and load music/fx
 	// EXTRA: Handle the case the sound can not be loaded!
 	Mix_Init(MIX_INIT_OGG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
-	state.music = Mix_LoadMUS("Assets/music.ogg");
-	state.fx_shoot = Mix_LoadWAV("Assets/laser.wav");
+	state.music[0] = Mix_LoadMUS("Assets/juego.ogg");
+	state.music[1] = Mix_LoadMUS("Assets/menu.ogg");
+	state.fx_shoot = Mix_LoadWAV("Assets/ehe.ogg");
 
 	// L4: TODO 2: Start playing loaded music
-	Mix_PlayMusic(state.music, -1);
+	//Mix_PlayMusic(state.music[1], -1);
+	
+	Mix_PlayMusic(state.music[0], -1);
 
 	// Init game variables
 	state.ship_x = 100;
@@ -196,7 +201,8 @@ void Start()
 void Finish()
 {
 	// L4: TODO 3: Unload music/fx and deinitialize audio system
-	Mix_FreeMusic(state.music);
+	Mix_FreeMusic(state.music[0]);
+	Mix_FreeMusic(state.music[1]);
 	Mix_FreeChunk(state.fx_shoot);
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -333,7 +339,7 @@ bool CheckInput()
 
 	// L2: DONE 6: Check ESCAPE key pressed to finish the game
 	if (state.keyboard[SDL_SCANCODE_ESCAPE] == KEY_DOWN) return false;
-
+	if (state.keyboard[SDL_SCANCODE_2] == KEY_DOWN) return false;
 	// Check QUIT window event to finish the game
 	if (state.window_events[WE_QUIT] == true) return false;
 
@@ -349,18 +355,25 @@ void MoveStuff()
 	{
 	case LOGO:
 	{
+		//Mix_ResumeMusic();
+		//Mix_PlayMusic(state.music[0], -1) ;
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = TITLE;
-		state.enemyship1_y = 0;	// coloca la nave en un sitio distinto 
-		state.enemyship1_x = 0;
+		state.enemyship1_y = rand() % 650;	// coloca la nave en un sitio distinto 
+		//state.enemyship1_x = 0;
 
 	} break;
 	case TITLE:
 	{
+		//Mix_ResumeMusic();
+	//	Mix_PlayMusic(state.music[0], -1) == 1;
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = GAMEPLAY;
+		else if (state.keyboard[SDL_SCANCODE_1] == KEY_DOWN) state.currentScreen = GAMEPLAY;
+		
 	} break;
 	case GAMEPLAY:
 	{
 		Mix_ResumeMusic();
+		//Mix_PlayMusic(state.music[1], -1) == 1;
 		//enemy
 		
 		if (state.ship_y != state.enemyship1_y) {
@@ -414,6 +427,7 @@ void MoveStuff()
 	} break;
 	default: break;
 	}
+	
 }
 
 // ----------------------------------------------------------------
@@ -432,7 +446,8 @@ void Draw()
 	} break;
 	case TITLE:
 	{
-
+		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
+		SDL_RenderCopy(state.renderer, state.background[2], NULL, &rec);
 	} break;
 	case GAMEPLAY:
 	{
