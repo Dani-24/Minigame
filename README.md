@@ -21,7 +21,7 @@ A minigame for SDL testing
 
 ## Developers
 
-* Daniel Toledo - Lead
+* Daniel Toledo - Lead / Programmer
 
 * Xavier López- Programmer
 
