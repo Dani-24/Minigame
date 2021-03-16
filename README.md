@@ -10,16 +10,16 @@ You are a turtle, and you can swim like a turtle... and you can shoot bubbles to
 
 ## Controls
 
-Move: Up, Down, Left and Rigth arrows
+* Move: Up, Down, Left and Rigth arrows
 
-Shoot: Space bar
+* Shoot: Space bar
 
-Exit game: Esc
+* Exit game: Esc
 
 ## Developers
 
-{Dani} - {Lead}
+* Daniel Toledo - Lead
 
-{Xavi} - {Programmer}
+* Xavier López- Programmer
 
-{Laia} - {Art}
+* Laia Pachón - Art
