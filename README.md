@@ -1,29 +1,18 @@
-# {Project Name}
+# Minigame
 
-## Description
+Description
+A minigame for SDL testing
 
-{project description}
+Key Features
+You are a turtle, and you can swim like a turtle... and you can shoot bubbles to a jellyfish 
 
-## Key Features
+Controls
 
- - {Feature01}
- - {Feature02}
- - {Feature03}
- - {Feature04}
- 
-## Controls
+Move: Up, Down, Left and Rigth arrows
+Shoot: Space bar
+Exit game: Esc
 
- - {ControlsScheme}
-
-## Developers
-
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
-
-## License
-
-This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-{AdditionalLicenses}
+Developers
+{Dani} - {Lead}
+{Xavi} - {Programmer}
+{Laia} - {Art}
